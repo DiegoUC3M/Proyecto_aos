@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
 #include <fstream>
+#include <omp.h>
 #include <iomanip> /*Libreria para ajustar la precision*/
 #include "sim-aos.hpp"
 #include "calculations.hpp"
