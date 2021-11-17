@@ -22,19 +22,5 @@ calculations.hpp
 fstream
 -
 
-/home/diego/Documentos/ProyectoArqui/Proyecto_aos/sim-aos.cpp
-iostream
--
-random
--
-fstream
--
-iomanip
--
-sim-aos.hpp
-/home/diego/Documentos/ProyectoArqui/Proyecto_aos/sim-aos.hpp
-calculations.hpp
-/home/diego/Documentos/ProyectoArqui/Proyecto_aos/calculations.hpp
-
 /home/diego/Documentos/ProyectoArqui/Proyecto_aos/sim-aos.hpp
 

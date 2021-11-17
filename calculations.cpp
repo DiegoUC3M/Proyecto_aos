@@ -111,9 +111,9 @@ void calcVelocities (double num_objetos, object* objetos, vec* accelerations, in
     //CALCULAMOS TODAS LAS VELOCIDADES ITERANDO SOBRE TODOS LOS OBJETOS
     for (int j = 0; j < num_objetos; j++) {
 
-        objetos[j].speed_x = objetos[j].speed_x + (accelerations[j].x * (incr_tiempo * (iteration + 1)));
-        objetos[j].speed_y = objetos[j].speed_y + (accelerations[j].y * (incr_tiempo * (iteration + 1)));
-        objetos[j].speed_z = objetos[j].speed_z + (accelerations[j].z * (incr_tiempo * (iteration + 1)));
+        objetos[j].speed_x = objetos[j].speed_x + (accelerations[j].x * (incr_tiempo));
+        objetos[j].speed_y = objetos[j].speed_y + (accelerations[j].y * (incr_tiempo));
+        objetos[j].speed_z = objetos[j].speed_z + (accelerations[j].z * (incr_tiempo));
 
         velocitiesFile << "speed[" << j << "]: " << objetos[j].speed_x << " "  << objetos[j].speed_y  << " "  << objetos[j].speed_z <<endl;
 
@@ -131,9 +131,9 @@ void calcPositions (double num_objetos, object* objetos, int iteration, double i
     positionsFile << "iteración " << iteration << ":" << endl;
 
     for (int j=0;j<num_objetos;j++) {
-        objetos[j].position_x = objetos[j].position_x + (objetos[j].speed_x * (incr_tiempo * (iteration+1)));
-        objetos[j].position_y = objetos[j].position_y + (objetos[j].speed_y * (incr_tiempo * (iteration+1)));
-        objetos[j].position_z = objetos[j].position_z + (objetos[j].speed_z * (incr_tiempo * (iteration+1)));
+        objetos[j].position_x = objetos[j].position_x + (objetos[j].speed_x * (incr_tiempo));
+        objetos[j].position_y = objetos[j].position_y + (objetos[j].speed_y * (incr_tiempo));
+        objetos[j].position_z = objetos[j].position_z + (objetos[j].speed_z * (incr_tiempo));
 
 
 
