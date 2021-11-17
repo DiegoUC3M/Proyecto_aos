@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/Proyecto_aos.dir/sim-aos.cpp.o CMakeFiles/Proyecto_aos.dir/calculations.cpp.o -o Proyecto_aos 
