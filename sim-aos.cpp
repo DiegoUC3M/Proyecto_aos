@@ -43,11 +43,6 @@ void comprobacionColisiones (int& num_objetos, object* objetos) {
 
             if (norma < 1) {//si su distancia es menor que la unidad
 
-                //ESCRIBIMOS LAS COLISIONES EN EL TXT DE POSITIONS
-                positionsFile << "Collapsing objects " << j << " and " << k+num_eliminados<< endl;
-                positionsFile << "Body " << j << ": " << objetos[j].position_x << " " << objetos[j].position_y << " " << objetos[j].position_z << " " << objetos[j].speed_x << " " << objetos[j].speed_y << " " << objetos[j].speed_z << " " << objetos[j].masa << endl;
-                positionsFile << "Body " << k+num_eliminados << ": " << objetos[k].position_x << " " << objetos[k].position_y << " " << objetos[k].position_z << " " << objetos[k].speed_x << " " << objetos[k].speed_y << " " << objetos[k].speed_z << " " << objetos[k].masa << endl;
-
                 //SUMAMOS LAS MASAS Y VELOCIDADES DE LOS OBJETOS J Y K Y ELIMINAMOS EL SEGUNDO OBJETO (ASIGNANDO VALORES -1)
                 objetos[j].masa = objetos[j].masa + objetos[k].masa;
                 objetos[j].speed_x = objetos[j].speed_x + objetos[k].speed_x;
@@ -61,8 +56,6 @@ void comprobacionColisiones (int& num_objetos, object* objetos) {
                 objetos[k].position_x = -1;
                 objetos[k].position_y = -1;
                 objetos[k].position_z = -1;
-
-                positionsFile << "Body " << k+num_eliminados << " removed" <<endl;
 
 
                 //ELIMINAMOS LOS OBJETOS MOVIÉNDOLOS AL FINAL DEL ARRAY, PARA QUE AL PRINCIPIO SOLO ESTÉN LOS NO COLISIONADOS
@@ -98,10 +91,6 @@ void comprobacionColisiones (int& num_objetos, object* objetos) {
 
             }
 
-
-
-            positionsFile << "Body " << j << " after collapse" <<endl;
-            positionsFile << "Body " << j << ": " << objetos[j].position_x << " " << objetos[j].position_y << " " << objetos[j].position_z << " " << objetos[j].speed_x << " " << objetos[j].speed_y << " " << objetos[j].speed_z << " " << objetos[j].masa << endl << endl;
 
 
 
