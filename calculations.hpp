@@ -6,18 +6,13 @@
 #define PROYECTO_SOA_CALCULATIONS_HPP
 #include <fstream>
 
-extern ofstream forcesFile;
-extern ofstream accelarationFile;
-extern ofstream velocitiesFile;
-extern ofstream positionsFile;
+vec* calcForces(int num_objetos, object* objetos, vec* forces);
 
-vec* calcForces(int num_objetos, object* objetos, vec* forces, int iteration);
+vec* calcAccelerations(int num_objetos,object* objetos, vec* forces, vec* accelerations);
 
-vec* calcAccelerations(int num_objetos,object* objetos, vec* forces, vec* accelerations, int iteration);
+void calcVelocities (int num_objetos, object* objetos, vec* accelerations, double incr_tiempo);
 
-void calcVelocities (int num_objetos, object* objetos, vec* accelerations, int iteration, double incr_tiempo);
-
-void calcPositions (int num_objetos, object* objetos, int iteration, double incr_tiempo, double lado);
+void calcPositions (int num_objetos, object* objetos, double incr_tiempo, double lado);
 
 
 #endif //PROYECTO_SOA_CALCULATIONS_HPP

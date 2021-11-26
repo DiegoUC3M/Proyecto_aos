@@ -116,9 +116,9 @@ void comprobacionColisiones (int& num_objetos, object* objetos) {
 
 
 
-
+double t1= omp_get_wtime();
 int main(int argc, char *argv[]) {
-
+    omp_set_num_threads(8);
 
     mt19937_64 gen64_aos;
 
@@ -172,14 +172,18 @@ int main(int argc, char *argv[]) {
     file_init.open("init_config.txt");
     file_init << fixed << setprecision(3) << lado << " " << incr_tiempo << " " << num_objetos;
 
+#pragma omp parallel for
+    for(int i=0; i<num_objetos; i++) {
+        objetos[i].speed_x = 0;
+        objetos[i].speed_y = 0;
+        objetos[i].speed_z = 0;
+    }
+
     //INICIALIZAMOS TODOS LOS OBJETOS
     for(int i=0; i<num_objetos; i++){
         objetos[i].position_x=distUniforme(gen64_aos);
         objetos[i].position_y=distUniforme(gen64_aos);
         objetos[i].position_z=distUniforme(gen64_aos);
-        objetos[i].speed_x=0;
-        objetos[i].speed_y=0;
-        objetos[i].speed_z=0;
         objetos[i].masa=distNormal(gen64_aos);
         file_init << fixed << setprecision(3) << "\n" << objetos[i].position_x << " " << objetos[i].position_y << " " << objetos[i].position_z << " " << objetos[i].speed_x << " " << objetos[i].speed_y << " " << objetos[i].speed_z << " " << objetos[i].masa;
     }
@@ -192,12 +196,6 @@ int main(int argc, char *argv[]) {
     comprobacionColisiones(num_objetos,objetos);
 
 
-
-    //ABRIMOS TODOS LOS ARCHIVOS TXT PARA PROCEDER A MODIFICARLOS
-    forcesFile.open("forces.txt");
-    accelarationFile.open("accelaration.txt");
-    velocitiesFile.open("velocities.txt");
-    positionsFile.open("positions.txt");
 
 
 
@@ -217,25 +215,16 @@ int main(int argc, char *argv[]) {
         }
 
         //REALIZAMOS LOS CÁLCULOS Y LA COMPROBACIÓN DE COLISIONES LLAMANDO A LAS FUNCIONES
-        fuerza = calcForces(num_objetos,objetos, fuerza, i);
-        aceleracion = calcAccelerations(num_objetos,objetos,fuerza,aceleracion, i);
-        calcVelocities(num_objetos,objetos,aceleracion,i, incr_tiempo);
-        calcPositions(num_objetos,objetos,i,incr_tiempo,lado);
+        fuerza = calcForces(num_objetos, objetos, fuerza);
+        aceleracion = calcAccelerations(num_objetos, objetos, fuerza, aceleracion);
+        calcVelocities(num_objetos, objetos, aceleracion, incr_tiempo);
+        calcPositions(num_objetos, objetos, incr_tiempo, lado);
 
-        comprobacionColisiones(num_objetos,objetos);
+        comprobacionColisiones(num_objetos, objetos);
 
 
     }
 
-
-
-
-
-    //CERRAMOS TODOS LOS ARCHIVOS TXT
-    forcesFile.close();
-    accelarationFile.close();
-    velocitiesFile.close();
-    positionsFile.close();
 
 
     //ESCRIBIMOS EL ARCHIVO FILE_FINAL, QUE TIENE LAS POSICIONES, VELOCIDADES Y MASAS DE LOS OBJETOS QUE QUEDAN AL FINAL AL NO HABER COLISIONADO
@@ -249,7 +238,8 @@ int main(int argc, char *argv[]) {
     file_final.close();//cierro el archivo
 
 
-
+    double t2=omp_get_wtime();
+    cout << t2-t1;
 
 
     return 0;

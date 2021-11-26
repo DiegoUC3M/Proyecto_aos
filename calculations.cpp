@@ -9,22 +9,11 @@
 #include "calculations.hpp"
 
 
-//DECLARAMOS LAS VARIABLES FILE
-ofstream forcesFile;
-ofstream accelarationFile;
-ofstream velocitiesFile;
-ofstream positionsFile;
-
-
-
-
 
 
 
 //HACEMOS EL CALCULO DE FUERZAS
-vec* calcForces(int num_objetos, object* objetos, vec* forces, int iteration) {
-
-    forcesFile << "iteración " << iteration << ":" << endl; //Escribimos en el txt en que iteracion esta antes de entrar en el bucle
+vec* calcForces(int num_objetos, object* objetos, vec* forces) {
 
     //EN ESTAS VARIABLES SE ALMACENAN LOS CALCULOS DE LA FUERZA GRAVITATORIA ENTRE DOS OBJETOS. LOS INICIALIZAMOS
     double fx = 0;
@@ -65,9 +54,6 @@ vec* calcForces(int num_objetos, object* objetos, vec* forces, int iteration) {
 
         }
 
-
-        forcesFile << "fuerza[" << j << "]: " << forces[j].x << " "  << forces[j].y << " "  << forces[j].z <<endl;
-
     }
 
     return forces;
@@ -79,10 +65,7 @@ vec* calcForces(int num_objetos, object* objetos, vec* forces, int iteration) {
 
 
 //HACEMOS EL CALCULO DE LAS ACELERACIONES
-vec* calcAccelerations(int num_objetos,object* objetos, vec* forces, vec* accelerations, int iteration) {
-
-    accelarationFile << "iteración " << iteration << ":" << endl;
-
+vec* calcAccelerations(int num_objetos,object* objetos, vec* forces, vec* accelerations) {
     //CALCULAMOS TODAS LAS ACELERACION ITERANDO SOBRE TODOS LOS OBJETOS
 #pragma omp parallel for
     for (int j = 0; j < num_objetos; j++) {
@@ -90,10 +73,6 @@ vec* calcAccelerations(int num_objetos,object* objetos, vec* forces, vec* accele
         accelerations[j].x = forces[j].x / objetos[j].masa;//aceleración eje x
         accelerations[j].y = forces[j].y / objetos[j].masa;//aceleración eje y
         accelerations[j].z = forces[j].z / objetos[j].masa;//aceleración eje z
-
-#pragma omp critical
-        accelarationFile << "accelaration[" << j << "]: " << accelerations[j].x << " "  << accelerations[j].y << " "  << accelerations[j].z <<endl;
-
 
     }
 
@@ -106,10 +85,7 @@ vec* calcAccelerations(int num_objetos,object* objetos, vec* forces, vec* accele
 
 
 //HACEMOS EL CALCULO DE LAS VELOCIDADES
-void calcVelocities (int num_objetos, object* objetos, vec* accelerations, int iteration, double incr_tiempo) {
-
-    velocitiesFile << "iteración " << iteration << ":" << endl;
-
+void calcVelocities (int num_objetos, object* objetos, vec* accelerations, double incr_tiempo) {
     //CALCULAMOS TODAS LAS VELOCIDADES ITERANDO SOBRE TODOS LOS OBJETOS
 #pragma omp parallel for
     for (int j = 0; j < num_objetos; j++) {
@@ -117,10 +93,6 @@ void calcVelocities (int num_objetos, object* objetos, vec* accelerations, int i
         objetos[j].speed_x = objetos[j].speed_x + (accelerations[j].x * (incr_tiempo));
         objetos[j].speed_y = objetos[j].speed_y + (accelerations[j].y * (incr_tiempo));
         objetos[j].speed_z = objetos[j].speed_z + (accelerations[j].z * (incr_tiempo));
-
-#pragma omp critical
-        velocitiesFile << "speed[" << j << "]: " << objetos[j].speed_x << " "  << objetos[j].speed_y  << " "  << objetos[j].speed_z <<endl;
-
 
     }
 
@@ -130,10 +102,7 @@ void calcVelocities (int num_objetos, object* objetos, vec* accelerations, int i
 
 
 //HACEMOS EL CALCULO DE LAS POSICIONES
-void calcPositions (int num_objetos, object* objetos, int iteration, double incr_tiempo, double lado) {
-
-    positionsFile << "iteración " << iteration << ":" << endl;
-
+void calcPositions (int num_objetos, object* objetos, double incr_tiempo, double lado) {
 #pragma omp parallel for
     for (int j=0;j<num_objetos;j++) {
         objetos[j].position_x = objetos[j].position_x + (objetos[j].speed_x * (incr_tiempo));
@@ -170,10 +139,6 @@ void calcPositions (int num_objetos, object* objetos, int iteration, double incr
             objetos[j].speed_z = -objetos[j].speed_z;
             objetos[j].position_z = lado;
         }
-
-#pragma omp critical
-        positionsFile << "positions[" << j << "]: " << objetos[j].position_x << " "  << objetos[j].position_y  << " "  << objetos[j].position_z <<endl;
-
 
     }
 
